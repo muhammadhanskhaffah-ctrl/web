@@ -33,7 +33,10 @@ class Monitoring extends Model
      */
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'karyawan_id');
+        return $this->belongsTo(
+            Karyawan::class,
+            'karyawan_id'
+        );
     }
 
     /**
@@ -41,14 +44,20 @@ class Monitoring extends Model
      */
     public function goal()
     {
-        return $this->belongsTo(Goal::class, 'goal_id');
+        return $this->belongsTo(
+            Goal::class,
+            'goal_id'
+        );
     }
 
     /**
-     * Relasi ke Monitoring KPI
+     * Relasi ke detail KPI monitoring
      */
     public function monitoringKpis()
     {
-        return $this->hasMany(MonitoringKpi::class, 'monitoring_id');
+        return $this->hasMany(
+            MonitoringKpi::class,
+            'monitoring_id'
+        )->orderBy('id');
     }
 }

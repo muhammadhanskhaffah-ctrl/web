@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('goal_kpis', function (Blueprint $table) {
-            //
+            $table->decimal('bobot_target', 10, 4)->nullable()->change();
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('goal_kpis', function (Blueprint $table) {
-            //
+            $table->decimal('bobot_target', 10, 2)->nullable()->change();
         });
     }
 };

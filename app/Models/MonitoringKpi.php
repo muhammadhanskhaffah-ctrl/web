@@ -34,4 +34,4 @@ class MonitoringKpi extends Model
     {
         return $this->belongsTo(GoalKpi::class, 'goal_kpi_id');
     }
-}
+}   

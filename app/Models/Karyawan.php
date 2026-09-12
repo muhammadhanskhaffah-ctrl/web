@@ -36,4 +36,11 @@ class Karyawan extends Model
     {
         return $this->hasMany(Monitoring::class, 'karyawan_id');
     }
+    /**
+ * Relasi Karyawan ke Evaluasi
+ */
+public function evaluasis()
+{
+    return $this->hasMany(Evaluasi::class, 'karyawan_id');
+}
 }

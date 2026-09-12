@@ -13,6 +13,29 @@ return new class extends Migration
     {
         Schema::create('evaluasis', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('karyawan_id')
+                ->constrained('karyawans')
+                ->cascadeOnDelete();
+
+            $table->foreignId('goal_id')
+                ->constrained('goals')
+                ->cascadeOnDelete();
+
+            $table->enum('jenis_evaluasi', [
+                'self',
+                'peer',
+                'supervisor'
+            ]);
+
+            $table->unsignedTinyInteger('skor')
+                ->nullable();
+
+            $table->text('komentar')
+                ->nullable();
+
+            $table->date('tanggal_evaluasi');
+
             $table->timestamps();
         });
     }
