@@ -51,52 +51,8 @@ RUN rm -f /var/www/html/.env \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Nginx config
-RUN cat > /etc/nginx/http.d/default.conf <<'EOF'
-server {
-    listen 8080;
-    server_name _;
-    root /var/www/html/public;
-    index index.php index.html;
-
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-}
-EOF
-
-# Supervisor config
-RUN cat > /etc/supervisord.conf <<'EOF'
-[supervisord]
-nodaemon=true
-user=root
-
-[program:php-fpm]
-command=/usr/local/sbin/php-fpm -F
-autostart=true
-autorestart=true
-priority=10
-
-[program:nginx]
-command=/usr/sbin/nginx -g "daemon off;"
-autostart=true
-autorestart=true
-priority=20
-EOF
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/supervisord.conf /etc/supervisord.conf
 
 EXPOSE 8080
 
