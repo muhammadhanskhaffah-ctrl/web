@@ -1,3 +1,14 @@
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY vite.config.js tailwind.config.js postcss.config.js ./
+COPY resources ./resources
+RUN npm run build
+
 FROM php:8.2-fpm-alpine
 
 # Install system deps
@@ -31,6 +42,7 @@ WORKDIR /var/www/html
 
 # Copy project
 COPY . /var/www/html
+COPY --from=frontend /app/public/build /var/www/html/public/build
 
 # Install PHP dependencies
 RUN rm -f /var/www/html/.env \
