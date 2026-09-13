@@ -1529,14 +1529,44 @@ PT. SAI Rp. 157.990.000',
                 ],
             ];
 
-            foreach ($data as $goalId => $kpis) {
-                foreach ($kpis as $kpi) {
-                    GoalKpi::create(array_merge(
-                        ['goal_id' => $goalId],
-                        $kpi
-                    ));
-                }
-            }
+            $mappingGoalId = [
+    5  => 3,
+    6  => 4,
+    7  => 5,
+    8  => 6,
+    9  => 7,
+    10 => 8,
+    11 => 9,
+    12 => 10,
+    13 => 11,
+    14 => 12,
+    15 => 13,
+    16 => 14,
+    17 => 15,
+    18 => 16,
+    19 => 17,
+    20 => 18,
+    21 => 19,
+    22 => 20,
+    23 => 21,
+    24 => 22,
+    25 => 23,
+];
+
+foreach ($data as $goalIdLama => $kpis) {
+    if (!isset($mappingGoalId[$goalIdLama])) {
+        continue;
+    }
+
+    $goalIdBaru = $mappingGoalId[$goalIdLama];
+
+    foreach ($kpis as $kpi) {
+        GoalKpi::create(array_merge(
+            ['goal_id' => $goalIdBaru],
+            $kpi
+        ));
+    }
+}
         });
     }
 }
