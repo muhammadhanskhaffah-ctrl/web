@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class GoalKpiSeeder extends Seeder
+class GoalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
