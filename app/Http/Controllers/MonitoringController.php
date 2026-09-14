@@ -134,7 +134,7 @@ class MonitoringController extends Controller
             ->toArray();
 
         foreach (
-            $validated['kpis'] as $index => $kpiData
+            ($validated['kpis'] ?? []) as $index => $kpiData
         ) {
             if (
                 !in_array(
@@ -198,7 +198,7 @@ class MonitoringController extends Controller
             $totalBobotTercapai = 0;
 
             $jumlahKpi = count(
-                $validated['kpis']
+                ($validated['kpis'] ?? [])
             );
 
             $jumlahKpiTerisi = 0;
@@ -211,7 +211,7 @@ class MonitoringController extends Controller
             |--------------------------------------------------------------------------
             */
             foreach (
-                $validated['kpis'] as $kpiData
+                ($validated['kpis'] ?? []) as $kpiData
             ) {
                 $goalKpi = $goal->kpis
                     ->firstWhere(
@@ -615,7 +615,7 @@ class MonitoringController extends Controller
                 ->toArray();
 
         foreach (
-            $validated['kpis'] as $index => $kpiData
+            ($validated['kpis'] ?? []) as $index => $kpiData
         ) {
             if (
                 !in_array(
@@ -678,7 +678,7 @@ class MonitoringController extends Controller
             $totalBobotTercapai = 0;
 
             $jumlahKpi = count(
-                $validated['kpis']
+                ($validated['kpis'] ?? [])
             );
 
             $jumlahKpiTerisi = 0;
@@ -691,7 +691,7 @@ class MonitoringController extends Controller
             |--------------------------------------------------------------------------
             */
             foreach (
-                $validated['kpis'] as $kpiData
+                ($validated['kpis'] ?? []) as $kpiData
             ) {
                 $goalKpi =
                     $goal->kpis
