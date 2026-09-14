@@ -77,7 +77,7 @@ class MonitoringController extends Controller
             'tanggal_monitoring' => 'required|date',
             'catatan' => 'nullable|string',
 
-            'kpis' => 'required|array|min:1',
+            'kpis' => 'nullable|array',
 
             'kpis.*.goal_kpi_id' => [
                 'required',
@@ -536,7 +536,7 @@ class MonitoringController extends Controller
             'tanggal_monitoring' => 'required|date',
             'catatan' => 'nullable|string',
 
-            'kpis' => 'required|array|min:1',
+            'kpis' => 'nullable|array',
 
             'kpis.*.goal_kpi_id' => [
                 'required',
@@ -579,6 +579,26 @@ class MonitoringController extends Controller
                         'Goal yang dipilih bukan milik karyawan tersebut.'
                 ])
                 ->withInput();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Jika form edit tidak mengirim kpis, gunakan data KPI lama
+        |--------------------------------------------------------------------------
+        */
+        if (
+            !isset($validated['kpis']) ||
+            empty($validated['kpis'])
+        ) {
+            $validated['kpis'] = MonitoringKpi::where(
+                'monitoring_id',
+                $monitoring->id
+            )->get()->map(function ($kpi) {
+                return [
+                    'goal_kpi_id' => $kpi->goal_kpi_id,
+                    'pencapaian' => $kpi->pencapaian,
+                ];
+            })->toArray();
         }
 
         /*
