@@ -79,7 +79,7 @@
 
 
         .sidebar-logo img {
-    width: 380px;
+    width: 450px;
     max-width: 100%;
     height: auto;
     object-fit: contain;
