@@ -763,8 +763,10 @@
             <a href="{{ route('dashboard') }}">
 
                 <img
-                    src="{{ asset('images/logo-baru-2.png') }}"
-                    alt="Logo PT. Petra Textima Mandiri"
+    src="{{ asset('images/logo-baru-2.png') }}"
+    alt="Logo PT. Petra Textima Mandiri"
+    style="width: 500px; height: auto;"
+>
                 >
  
             </a>
