@@ -79,11 +79,13 @@
 
 
         .sidebar-logo img {
-    width: 450px;
-    max-width: 100%;
-    height: auto;
+    width: 450px !important;
+    max-width: none !important;
+    height: auto !important;
     object-fit: contain;
     display: block;
+    transform: scale(1.5);
+    transform-origin: center;
 }
 
 
