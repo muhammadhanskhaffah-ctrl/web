@@ -79,15 +79,12 @@
 
 
         .sidebar-logo img {
-            width: 190px;
-            max-width: 100%;
-
-            height: auto;
-
-            object-fit: contain;
-
-            display: block;
-        }
+    width: 500px;
+    max-width: none;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
 
 
         /* =========================================================
@@ -765,7 +762,7 @@
                 <img
     src="{{ asset('images/logo-baru-2.png') }}"
     alt="Logo PT. Petra Textima Mandiri"
-    style="width: 500px; height: auto;"
+    
 >
                 >
  
