@@ -763,10 +763,10 @@
             <a href="{{ route('dashboard') }}">
 
                 <img
-                    src="{{ asset('images/logo-baru.png') }}"
+                    src="{{ asset('images/logo-baru-2.png') }}"
                     alt="Logo PT. Petra Textima Mandiri"
                 >
-
+ 
             </a>
 
         </div>
