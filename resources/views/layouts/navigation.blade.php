@@ -664,36 +664,46 @@
 
 
         /* =========================================================
-   MOBILE MENU
+   MOBILE MENU - TAMPILAN RAPIH
 ========================================================= */
 
 .mobile-menu {
     position: fixed;
 
     top: 64px;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
 
-    background: #0b1f3a;
+    width: calc(100% - 20px);
+    max-width: 420px;
 
-    padding: 14px;
+    transform: translateX(-50%);
 
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    background: #0b1f3a;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 0 0 14px 14px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 
     z-index: 9997;
 
-    border-radius: 0 0 16px 16px;
+    max-height: calc(100vh - 70px);
 
-    box-shadow:
-        0 8px 24px rgba(15, 23, 42, 0.25);
-
-    max-height: calc(100vh - 64px);
     overflow-y: auto;
 }
 
-/* ITEM MENU HP */
+/* =========================================================
+   ITEM MENU
+========================================================= */
 
 .mobile-menu a {
     display: flex;
@@ -701,47 +711,34 @@
     align-items: center;
     justify-content: center;
 
-    min-height: 45px;
+    min-height: 40px;
 
-    padding: 10px 8px;
+    padding: 8px 5px;
 
     margin: 0;
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
 
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
 
-    background-color: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.06);
 
     color: #e5edf8 !important;
 
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 12px;
+
     font-weight: 500;
 
     text-align: center;
 
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-/* SAAT MENU DISENTUH */
-
-.mobile-menu a:active {
-    transform: scale(0.97);
-}
-
-/* HOVER MENU */
-
-.mobile-menu a:hover {
-    background-color: rgba(59, 130, 246, 0.25);
-
-    color: #ffffff !important;
-}
-
-/* MENU AKTIF */
+/* =========================================================
+   MENU AKTIF
+========================================================= */
 
 .mobile-menu a.active {
     background: linear-gradient(
@@ -754,25 +751,39 @@
 
     color: #ffffff !important;
 
-    box-shadow:
-        0 4px 10px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
 }
 
-/* HP LAYAR SANGAT KECIL */
+/* =========================================================
+   SAAT MENU DISENTUH
+========================================================= */
+
+.mobile-menu a:active {
+    transform: scale(0.97);
+
+    background-color: #2563eb;
+}
+
+/* =========================================================
+   LAYAR HP KECIL
+========================================================= */
 
 @media (max-width: 360px) {
 
     .mobile-menu {
-        padding: 10px;
-        gap: 7px;
+        width: calc(100% - 14px);
+
+        padding: 9px;
+
+        gap: 6px;
     }
 
     .mobile-menu a {
-        min-height: 42px;
+        min-height: 38px;
 
-        padding: 8px 5px;
+        padding: 7px 4px;
 
-        font-size: 12px;
+        font-size: 11px;
     }
 
 }
