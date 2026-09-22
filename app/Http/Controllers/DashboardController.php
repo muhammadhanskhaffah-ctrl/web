@@ -26,12 +26,6 @@ class DashboardController extends Controller
 
         $rataRataPencapaian = 85.00;
 
-        $pencapaianBaik = 1;
-
-        $pencapaianSedang = 0;
-
-        $pencapaianRendah = 0;
-
 
         /*
         |--------------------------------------------------------------------------
@@ -45,6 +39,34 @@ class DashboardController extends Controller
         ])
             ->orderBy('tanggal_monitoring', 'desc')
             ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DISTRIBUSI PENCAPAIAN KINERJA
+        |--------------------------------------------------------------------------
+        */
+
+        $pencapaianBaik = $monitoringDatabase
+            ->filter(function ($monitoring) {
+                return $monitoring->persentase >= 80;
+            })
+            ->count();
+
+
+        $pencapaianSedang = $monitoringDatabase
+            ->filter(function ($monitoring) {
+                return $monitoring->persentase >= 60
+                    && $monitoring->persentase < 80;
+            })
+            ->count();
+
+
+        $pencapaianRendah = $monitoringDatabase
+            ->filter(function ($monitoring) {
+                return $monitoring->persentase < 60;
+            })
+            ->count();
 
 
         /*
@@ -86,9 +108,9 @@ class DashboardController extends Controller
                 }
 
                 /*
-                |------------------------------------------------------------------
+                |--------------------------------------------------------------------------
                 | Ubah tanggal database menjadi objek Carbon
-                |------------------------------------------------------------------
+                |--------------------------------------------------------------------------
                 */
 
                 $tanggal = \Carbon\Carbon::parse(
@@ -101,9 +123,9 @@ class DashboardController extends Controller
 
 
             /*
-            |------------------------------------------------------------------
+            |--------------------------------------------------------------------------
             | Hitung rata-rata persentase
-            |------------------------------------------------------------------
+            |--------------------------------------------------------------------------
             */
 
             $rataRata = $dataBulan->avg('persentase') ?? 0;
@@ -153,4 +175,4 @@ class DashboardController extends Controller
             'monitoringTerbaru'
         ));
     }
-}
+} 
