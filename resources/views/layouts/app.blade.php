@@ -16,6 +16,7 @@
             content="{{ csrf_token() }}"
         >
 
+
         {{-- =====================================================
              INFORMASI APLIKASI
         ====================================================== --}}
@@ -39,20 +40,23 @@
             content="#123968"
         >
 
+
         {{-- =====================================================
-             FAVICON
+             FAVICON KHUSUS TAB BROWSER
+             Tidak mengubah logo Dashboard
         ====================================================== --}}
 
         <link
             rel="icon"
             type="image/png"
-            href="{{ asset('images/logo-baru-2.png') }}"
+            href="{{ asset('images/favicon-petra.png') }}"
         >
 
         <link
             rel="apple-touch-icon"
-            href="{{ asset('images/logo-baru-2.png') }}"
+            href="{{ asset('images/favicon-petra.png') }}"
         >
+
 
         {{-- =====================================================
              FONT
@@ -64,6 +68,7 @@
             href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap"
             rel="stylesheet"
         >
+
 
         {{-- =====================================================
              SCRIPTS DAN CSS
@@ -80,6 +85,7 @@
     <body class="font-sans antialiased">
 
         <div class="min-h-screen bg-gray-100">
+
 
             {{-- =================================================
                  NAVIGASI
@@ -118,6 +124,7 @@
                 {{ $slot }}
 
             </main>
+
 
         </div>
 
