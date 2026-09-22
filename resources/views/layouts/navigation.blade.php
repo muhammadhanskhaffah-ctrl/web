@@ -926,26 +926,25 @@
     }
 
     .topbar-left {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        min-width: 0;
-        gap: 8px;
-    }
-
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 10px;
+}
     .mobile-button {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        width: 34px;
-        height: 34px;
-        padding: 0;
-        border: none;
-        background: transparent;
-        color: white;
-        cursor: pointer;
-    }
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+}
 
     .mobile-logo {
         display: flex !important;
@@ -955,21 +954,21 @@
     }
 
     .mobile-logo img {
-        width: 85px;
-        height: auto;
-        display: block;
-    }
+    width: 115px;
+    height: auto;
+    display: block;
+}   
 
     .topbar-title {
-        display: block;
-        min-width: 0;
-        max-width: 165px;
-        font-size: 12px;
-        line-height: 1.4;
-        font-weight: 600;
-        color: white;
-        white-space: normal;
-    }
+    display: block;
+    min-width: 0;
+    max-width: 190px;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: white;
+    white-space: normal;
+}
 
     .topbar-right {
         display: flex;
