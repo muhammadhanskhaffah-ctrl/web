@@ -400,6 +400,83 @@
                     </div>
 
 
+                    {{-- DETAIL KPI --}}
+                    <div class="form-group">
+                        <label class="form-label">
+                            Detail KPI
+                        </label>
+
+                        @forelse($monitoring->monitoringKpis as $index => $item)
+                            <div style="
+                                border: 1px solid #cbd5e1;
+                                border-radius: 10px;
+                                padding: 18px;
+                                margin-bottom: 15px;
+                                background-color: #f8fafc;
+                            ">
+                                <div style="
+                                    font-weight: 700;
+                                    color: #0f172a;
+                                    margin-bottom: 12px;
+                                ">
+                                    KPI {{ $index + 1 }}
+                                </div>
+
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Indikator Kinerja Perusahaan:</strong><br>
+                                    {{ $item->goalKpi->indikator_kinerja_perusahaan ?? '-' }}
+                                </div>
+
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Indikator Kinerja Individu:</strong><br>
+                                    {{ $item->goalKpi->indikator_kinerja_individu ?? '-' }}
+                                </div>
+
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Baseline 2025:</strong>
+                                    {{ $item->goalKpi->baseline_2025 ?? '-' }}
+                                </div>
+
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Target 2026:</strong>
+                                    {{ $item->goalKpi->target_2026 ?? '-' }}
+                                </div>
+
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Bobot Target:</strong>
+                                    {{ $item->goalKpi->bobot_target ?? '-' }}
+                                </div>
+
+                                <input
+                                    type="hidden"
+                                    name="kpis[{{ $index }}][goal_kpi_id]"
+                                    value="{{ $item->goal_kpi_id }}"
+                                >
+
+                                <label class="form-label">
+                                    Pencapaian
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="kpis[{{ $index }}][pencapaian]"
+                                    class="form-input"
+                                    step="0.01"
+                                    min="0"
+                                    value="{{ old(
+                                        'kpis.' . $index . '.pencapaian',
+                                        $item->pencapaian
+                                    ) }}"
+                                    placeholder="Masukkan pencapaian"
+                                >
+                            </div>
+                        @empty
+                            <div class="info-box">
+                                Belum ada detail KPI pada monitoring ini.
+                            </div>
+                        @endforelse
+                    </div>
+
                     {{-- TARGET --}}
 
                     <div class="form-group">
