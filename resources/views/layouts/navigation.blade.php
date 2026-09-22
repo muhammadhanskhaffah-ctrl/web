@@ -910,12 +910,16 @@
    PERBAIKAN HEADER MOBILE LMS
 ========================================================= */
 
+/* =========================================================
+   HEADER MOBILE LMS - PERBAIKAN FINAL
+========================================================= */
+
 @media (max-width: 768px) {
 
     .topbar {
-        height: 64px;   
+        height: 64px;
         min-height: 64px;
-        padding: 0 12px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         background: linear-gradient(
@@ -926,60 +930,64 @@
     }
 
     .topbar-left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
-    gap: 10px;
-}
-    .mobile-button {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-}
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+        gap: 8px;
+    }
 
+    /* LOGO */
     .mobile-logo {
         display: flex !important;
         align-items: center;
-        margin-left: 0;
         flex-shrink: 0;
+        margin-left: 0;
+        order: 1;
     }
 
     .mobile-logo img {
-    width: 200px;
-    height: auto;
-    display: block;
-}   
+        width: 100px;
+        height: auto;
+        display: block;
+    }
 
+    /* JUDUL SISTEM */
     .topbar-title {
-    display: block;
-    min-width: 0;
-    max-width: 190px;
-    font-size: 14px;
-    line-height: 1.35;
-    font-weight: 600;
-    color: white;
-    white-space: normal;
-}
+        display: block;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        font-size: 13px;
+        line-height: 1.35;
+        font-weight: 600;
+        color: white;
+        white-space: normal;
+        order: 2;
+    }
+
+    /* TOMBOL MENU */
+    .mobile-button {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        margin-left: 4px;
+        border: none;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+        order: 3;
+    }
 
     .topbar-right {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         flex-shrink: 0;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
     }
 
     .user-information {
@@ -988,6 +996,11 @@
 
     .topbar-divider {
         display: none;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
     }
 
     .admin-dropdown-button {
