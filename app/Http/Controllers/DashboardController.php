@@ -22,8 +22,6 @@ class DashboardController extends Controller
 
         $totalGoal = 21;
 
-        $totalMonitoring = 1;
-
         $rataRataPencapaian = 85.00;
 
 
@@ -39,6 +37,19 @@ class DashboardController extends Controller
         ])
             ->orderBy('tanggal_monitoring', 'desc')
             ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL KARYAWAN YANG SUDAH DIMONITORING
+        |--------------------------------------------------------------------------
+        */
+
+        $totalMonitoring = $monitoringDatabase
+            ->pluck('karyawan_id')
+            ->filter()
+            ->unique()
+            ->count();
 
 
         /*
@@ -175,4 +186,4 @@ class DashboardController extends Controller
             'monitoringTerbaru'
         ));
     }
-} 
+}
