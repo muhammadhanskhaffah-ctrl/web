@@ -947,10 +947,10 @@
     }
 
     .mobile-logo img {
-        width: 100px;
-        height: auto;
-        display: block;
-    }
+    width: 100px;
+    height: auto;
+    display: block;
+}
 
     /* JUDUL SISTEM */
     .topbar-title {
