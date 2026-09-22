@@ -814,28 +814,187 @@
                 font-size: 13px;
             }
         }
-/* LOGO MOBILE */
-.mobile-logo {
-    display: none;
-    align-items: center;
-    margin-left: 10px;
-}
 
-.mobile-logo img {
-    width: 110px;
-    height: auto;
-    display: block;
-}
 
-/* TAMPILAN HP */
+
+        /* =========================================================
+           HEADER MOBILE SEPERTI LMS
+           Logo kiri - judul tengah - fitur pengguna dan menu kanan
+        ========================================================= */
+
+        .mobile-logo {
+            display: none;
+            align-items: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .mobile-logo img {
+            display: block;
+            width: 68px;
+            height: auto;
+            max-height: 38px;
+            object-fit: contain;
+        }
+
+        @media (max-width: 900px) {
+
+            .topbar {
+                background: linear-gradient(135deg, #173b78 0%, #087f9b 100%);
+                min-height: 58px;
+                height: 64px;
+                padding: 8px 12px;
+                gap: 8px;
+            }
+
+            .topbar-left {
+                display: contents;
+            }
+
+            .mobile-logo {
+                display: flex;
+                order: 1;
+            }
+
+            .topbar-title {
+                order: 2;
+                flex: 1;
+                min-width: 0;
+                color: #ffffff;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 1.35;
+                white-space: normal;
+            }
+
+            .topbar-right {
+                order: 3;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-left: auto;
+                flex-shrink: 0;
+            }
+
+            .mobile-button {
+                order: 4;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                padding: 4px;
+                margin: 0;
+                color: #ffffff;
+                flex-shrink: 0;
+            }
+
+            .mobile-button svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .user-information {
+                display: none;
+            }
+
+            .topbar-divider {
+                display: none;
+            }
+
+            .notification-button {
+                display: none;
+            }
+        }
+/* =========================================================
+   PERBAIKAN HEADER MOBILE LMS
+========================================================= */
+
 @media (max-width: 768px) {
-    .mobile-logo {
+
+    .topbar {
+        height: 64px;   
+        min-height: 64px;
+        padding: 0 12px;
         display: flex;
+        align-items: center;
+        background: linear-gradient(
+            135deg,
+            #0b2447,
+            #123b70
+        );
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+        gap: 8px;
+    }
+
+    .mobile-button {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+    }
+
+    .mobile-logo {
+        display: flex !important;
+        align-items: center;
+        margin-left: 0;
+        flex-shrink: 0;
     }
 
     .mobile-logo img {
-        width: 100px;
+        width: 85px;
         height: auto;
+        display: block;
+    }
+
+    .topbar-title {
+        display: block;
+        min-width: 0;
+        max-width: 165px;
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 600;
+        color: white;
+        white-space: normal;
+    }
+
+    .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-information {
+        display: none !important;
+    }
+
+    .topbar-divider {
+        display: none;
+    }
+
+    .admin-dropdown-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
     </style>
@@ -854,12 +1013,10 @@
             <a href="{{ route('dashboard') }}">
 
                 <img
-    src="{{ asset('images/logo-baru-2.png') }}"
-    alt="Logo PT. Petra Textima Mandiri"
-    
->
+                    src="{{ asset('images/logo-baru-2.png') }}"
+                    alt="Logo PT. Petra Textima Mandiri"
                 >
- 
+
             </a>
 
         </div>
@@ -1156,12 +1313,20 @@
                 </svg>
 
             </button>
-<div class="mobile-logo">
-    <img
-        src="{{ asset('images/logo-baru-2.png') }}"
-        alt="Logo Petra Textima"
-    >
-</div>
+
+
+            {{-- LOGO MOBILE --}}
+
+            <a
+                href="{{ route('dashboard') }}"
+                class="mobile-logo"
+            >
+                <img
+                    src="{{ asset('images/logo-baru-2.png') }}"
+                    alt="Logo PT. Petra Textima Mandiri"
+                >
+            </a>
+
 
             {{-- JUDUL SISTEM --}}
 
