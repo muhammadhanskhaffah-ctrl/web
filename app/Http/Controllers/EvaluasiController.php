@@ -1197,7 +1197,7 @@ class EvaluasiController extends Controller
             round($avgPeerKepuasan, 2);
 
         $skorPeer =
-            round($skorPeer, 2);
+            round($skorPeer, 1);
 
         $avgSkorKinerja =
             round($avgSkorKinerja, 2);
@@ -1215,7 +1215,7 @@ class EvaluasiController extends Controller
             round($avgPerilakuSupervisor, 2);
 
         $skorSupervisor =
-            round($skorSupervisor, 2);
+    round($skorSupervisor, 1);
 
         $nilaiPeer =
             round($nilaiPeer, 2);
