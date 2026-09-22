@@ -954,7 +954,7 @@
     }
 
     .mobile-logo img {
-    width: 115px;
+    width: 200px;
     height: auto;
     display: block;
 }   
