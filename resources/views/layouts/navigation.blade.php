@@ -664,60 +664,118 @@
 
 
         /* =========================================================
-           MOBILE MENU
-        ========================================================= */
+   MOBILE MENU
+========================================================= */
 
-        .mobile-menu {
-            position: fixed;
+.mobile-menu {
+    position: fixed;
 
-            top: 64px;
-            left: 0;
-            right: 0;
+    top: 64px;
+    left: 0;
+    right: 0;
 
-            background-color: #0b1f3a;
+    background: #0b1f3a;
 
-            padding: 15px;
+    padding: 14px;
 
-            z-index: 9997;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
 
-            box-shadow:
-                0 8px 20px rgba(15, 23, 42, 0.20);
-        }
+    z-index: 9997;
 
+    border-radius: 0 0 16px 16px;
 
-        .mobile-menu a {
-            display: flex;
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.25);
 
-            align-items: center;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+}
 
-            min-height: 46px;
+/* ITEM MENU HP */
 
-            padding: 0 14px;
+.mobile-menu a {
+    display: flex;
 
-            margin-bottom: 5px;
+    align-items: center;
+    justify-content: center;
 
-            border-radius: 8px;
+    min-height: 45px;
 
-            color: #e5edf8 !important;
+    padding: 10px 8px;
 
-            text-decoration: none;
+    margin: 0;
 
-            font-size: 14px;
-        }
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
+    border-radius: 10px;
 
-        .mobile-menu a:hover {
-            background-color: rgba(59,130,246,0.20);
+    background-color: rgba(255, 255, 255, 0.06);
 
-            color: #ffffff !important;
-        }
+    color: #e5edf8 !important;
 
+    text-decoration: none;
 
-        .mobile-menu a.active {
-            background-color: #2563eb;
+    font-size: 13px;
+    font-weight: 500;
 
-            color: #ffffff !important;
-        }
+    text-align: center;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* SAAT MENU DISENTUH */
+
+.mobile-menu a:active {
+    transform: scale(0.97);
+}
+
+/* HOVER MENU */
+
+.mobile-menu a:hover {
+    background-color: rgba(59, 130, 246, 0.25);
+
+    color: #ffffff !important;
+}
+
+/* MENU AKTIF */
+
+.mobile-menu a.active {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    border-color: #3b82f6;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+/* HP LAYAR SANGAT KECIL */
+
+@media (max-width: 360px) {
+
+    .mobile-menu {
+        padding: 10px;
+        gap: 7px;
+    }
+
+    .mobile-menu a {
+        min-height: 42px;
+
+        padding: 8px 5px;
+
+        font-size: 12px;
+    }
+
+}
 
 
         /* =========================================================
