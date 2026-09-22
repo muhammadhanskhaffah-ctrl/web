@@ -401,80 +401,230 @@
 
 
                     {{-- DETAIL KPI --}}
-                    <div class="form-group">
-                        <label class="form-label">
-                            Detail KPI
-                        </label>
 
-                        @forelse($monitoring->monitoringKpis as $index => $item)
-                            <div style="
-                                border: 1px solid #cbd5e1;
-                                border-radius: 10px;
-                                padding: 18px;
-                                margin-bottom: 15px;
-                                background-color: #f8fafc;
-                            ">
-                                <div style="
-                                    font-weight: 700;
-                                    color: #0f172a;
-                                    margin-bottom: 12px;
-                                ">
-                                    KPI {{ $index + 1 }}
-                                </div>
+<div class="form-group">
 
-                                <div style="margin-bottom: 10px;">
-                                    <strong>Indikator Kinerja Perusahaan:</strong><br>
-                                    {{ $item->goalKpi->indikator_kinerja_perusahaan ?? '-' }}
-                                </div>
+    <label class="form-label">
+        Detail KPI
+    </label>
 
-                                <div style="margin-bottom: 10px;">
-                                    <strong>Indikator Kinerja Individu:</strong><br>
-                                    {{ $item->goalKpi->indikator_kinerja_individu ?? '-' }}
-                                </div>
+    <div style="
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        margin-top: 10px;
+    ">
 
-                                <div style="margin-bottom: 10px;">
-                                    <strong>Baseline 2025:</strong>
-                                    {{ $item->goalKpi->baseline_2025 ?? '-' }}
-                                </div>
+        <table style="
+            width: 100%;
+            min-width: 1100px;
+            border-collapse: collapse;
+            font-size: 14px;
+        ">
 
-                                <div style="margin-bottom: 10px;">
-                                    <strong>Target 2026:</strong>
-                                    {{ $item->goalKpi->target_2026 ?? '-' }}
-                                </div>
+            <thead>
 
-                                <div style="margin-bottom: 10px;">
-                                    <strong>Bobot Target:</strong>
-                                    {{ $item->goalKpi->bobot_target ?? '-' }}
-                                </div>
+                <tr style="
+                    background-color: #243f91;
+                    color: white;
+                    text-align: left;
+                ">
 
-                                <input
-                                    type="hidden"
-                                    name="kpis[{{ $index }}][goal_kpi_id]"
-                                    value="{{ $item->goal_kpi_id }}"
-                                >
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 180px;
+                    ">
+                        Indikator Kinerja Perusahaan
+                    </th>
 
-                                <label class="form-label">
-                                    Pencapaian
-                                </label>
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 220px;
+                    ">
+                        Indikator Kinerja Individu
+                    </th>
 
-                                <input
-                                    type="number"
-                                    name="kpis[{{ $index }}][pencapaian]"
-                                    class="form-input"
-                                    step="0.01"
-                                    min="0"
-                                    value="{{ old(
-                                        'kpis.' . $index . '.pencapaian',
-                                        $item->pencapaian
-                                    ) }}"
-                                    placeholder="Masukkan pencapaian"
-                                >
-                            </div>
-                        @empty
-                            <div class="info-box">
-                                Belum ada detail KPI pada monitoring ini.
-                            </div>
-                        @endforelse
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 150px;
+                    ">
+                        Baseline 2025
+                    </th>
+
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 150px;
+                    ">
+                        Target 2026
+                    </th>
+
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 180px;
+                    ">
+                        Pencapaian
+                    </th>
+
+                    <th style="
+                        padding: 14px;
+                        border: 1px solid #d1d5db;
+                        min-width: 130px;
+                    ">
+                        Bobot Target
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @forelse($monitoring->monitoringKpis as $index => $item)
+
+                    <tr style="
+    background-color: #ffffff;
+">
+
+                        {{-- INDIKATOR PERUSAHAAN --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                        ">
+
+                            {{ $item->goalKpi->indikator_kinerja_perusahaan ?? '-' }}
+
+                        </td>
+
+
+                        {{-- INDIKATOR INDIVIDU --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                            font-weight: 600;
+                        ">
+
+                            {{ $item->goalKpi->indikator_kinerja_individu ?? '-' }}
+
+                        </td>
+
+
+                        {{-- BASELINE 2025 --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                        ">
+
+                            {{ $item->goalKpi->baseline_2025 ?? '-' }}
+
+                        </td>
+
+
+                        {{-- TARGET 2026 --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                        ">
+
+                            {{ $item->goalKpi->target_2026 ?? '-' }}
+
+                        </td>
+
+
+                        {{-- PENCAPAIAN --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                        ">
+
+                            <input
+                                type="hidden"
+                                name="kpis[{{ $index }}][goal_kpi_id]"
+                                value="{{ $item->goal_kpi_id }}"
+                            >
+
+                            <input
+                                type="number"
+                                name="kpis[{{ $index }}][pencapaian]"
+                                class="form-input"
+                                step="0.01"
+                                min="0"
+                                value="{{ old(
+                                    'kpis.' . $index . '.pencapaian',
+                                    $item->pencapaian
+                                ) }}"
+                                placeholder="Pencapaian"
+                                style="
+                                    width: 100%;
+                                    min-width: 140px;
+                                    padding: 10px;
+                                    border: 1px solid #cbd5e1;
+                                    border-radius: 6px;
+                                    background-color: white;
+                                "
+                            >
+
+                        </td>
+
+
+                        {{-- BOBOT TARGET --}}
+
+                        <td style="
+                            padding: 14px;
+                            border: 1px solid #d1d5db;
+                            vertical-align: top;
+                        ">
+
+                            {{ $item->goalKpi->bobot_target ?? '-' }}
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            style="
+                                padding: 20px;
+                                text-align: center;
+                                border: 1px solid #d1d5db;
+                                color: #64748b;
+                            "
+                        >
+
+                            Belum ada detail KPI pada monitoring ini.
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
                     </div>
 
                     {{-- TARGET --}}
