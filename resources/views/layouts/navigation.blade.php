@@ -814,7 +814,30 @@
                 font-size: 13px;
             }
         }
+/* LOGO MOBILE */
+.mobile-logo {
+    display: none;
+    align-items: center;
+    margin-left: 10px;
+}
 
+.mobile-logo img {
+    width: 110px;
+    height: auto;
+    display: block;
+}
+
+/* TAMPILAN HP */
+@media (max-width: 768px) {
+    .mobile-logo {
+        display: flex;
+    }
+
+    .mobile-logo img {
+        width: 100px;
+        height: auto;
+    }
+}
     </style>
 
 
@@ -1133,7 +1156,12 @@
                 </svg>
 
             </button>
-
+<div class="mobile-logo">
+    <img
+        src="{{ asset('images/logo-baru-2.png') }}"
+        alt="Logo Petra Textima"
+    >
+</div>
 
             {{-- JUDUL SISTEM --}}
 
