@@ -78,14 +78,36 @@
         }
 
 
-        .sidebar-logo img {
-    width: 230px !important;
-    max-width: none !important;
-    height: auto !important;
-    object-fit: contain;
+       /* =========================================================
+   LOGO SIDEBAR DESKTOP
+========================================================= */
+
+.sidebar-logo {
+    width: 100%;
+    height: 145px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.sidebar-logo a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-logo img {
     display: block;
-    transform: scale(1.5);
-    transform-origin: center;
+    width: 180px;
+    max-width: 100%;
+    height: 110px;
+    object-fit: contain;
+    object-position: center;
 }
 
 
