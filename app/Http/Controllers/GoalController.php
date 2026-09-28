@@ -14,7 +14,9 @@ class GoalController extends Controller
     public function index()
     {
         $goals = Goal::with('karyawan')
-            ->latest()
+            ->join('karyawans', 'goals.karyawan_id', '=', 'karyawans.id')
+            ->orderBy('karyawans.nama', 'asc')
+            ->select('goals.*')
             ->get();
 
         return view('goals.index', compact('goals'));
