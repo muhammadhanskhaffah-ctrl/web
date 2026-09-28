@@ -157,7 +157,6 @@
         }
     </style>
 
-
     <div class="edit-container">
 
         <div class="edit-card">
@@ -175,7 +174,6 @@
 
             </div>
 
-
             {{-- FORM --}}
             <div class="edit-body">
 
@@ -186,7 +184,6 @@
 
                     @csrf
                     @method('PUT')
-
 
                     {{-- NIK --}}
                     <div class="form-group">
@@ -211,7 +208,6 @@
 
                     </div>
 
-
                     {{-- NAMA --}}
                     <div class="form-group">
 
@@ -234,7 +230,6 @@
                         @enderror
 
                     </div>
-
 
                     {{-- JABATAN --}}
                     <div class="form-group">
@@ -259,7 +254,6 @@
 
                     </div>
 
-
                     {{-- DEPARTEMEN --}}
                     <div class="form-group">
 
@@ -283,7 +277,6 @@
 
                     </div>
 
-
                     {{-- JENIS KELAMIN --}}
                     <div class="form-group">
 
@@ -303,14 +296,14 @@
 
                             <option
                                 value="L"
-                                {{ old('jenis_kelamin', $karyawan->jenis_kelamin) == 'L' ? 'selected' : '' }}
+                                {{ in_array(old('jenis_kelamin', $karyawan->jenis_kelamin), ['L', 'Laki-laki']) ? 'selected' : '' }}
                             >
                                 Laki-laki
                             </option>
 
                             <option
                                 value="P"
-                                {{ old('jenis_kelamin', $karyawan->jenis_kelamin) == 'P' ? 'selected' : '' }}
+                                {{ in_array(old('jenis_kelamin', $karyawan->jenis_kelamin), ['P', 'Perempuan']) ? 'selected' : '' }}
                             >
                                 Perempuan
                             </option>
@@ -324,7 +317,6 @@
                         @enderror
 
                     </div>
-
 
                     {{-- TANGGAL LAHIR --}}
                     <div class="form-group">
@@ -349,7 +341,6 @@
 
                     </div>
 
-
                     {{-- ALAMAT --}}
                     <div class="form-group">
 
@@ -370,7 +361,6 @@
                         @enderror
 
                     </div>
-
 
                     {{-- NO HP --}}
                     <div class="form-group">
@@ -395,7 +385,6 @@
 
                     </div>
 
-
                     {{-- TANGGAL MASUK --}}
                     <div class="form-group">
 
@@ -419,7 +408,6 @@
 
                     </div>
 
-
                     {{-- TOMBOL --}}
                     <div class="button-area">
 
@@ -438,7 +426,6 @@
                         </button>
 
                     </div>
-
 
                 </form>
 

@@ -123,15 +123,15 @@
                                 <option value="">-- Pilih Jenis Kelamin --</option>
 
                                 <option
-                                    value="Laki-laki"
-                                    {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}
+                                    value="L"
+                                    {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}
                                 >
                                     Laki-laki
                                 </option>
 
                                 <option
-                                    value="Perempuan"
-                                    {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}
+                                    value="P"
+                                    {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}
                                 >
                                     Perempuan
                                 </option>
