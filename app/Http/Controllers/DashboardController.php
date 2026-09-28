@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Monitoring;
+use App\Models\Karyawan;
+use App\Models\Goal;
 use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
@@ -12,19 +14,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        /*
-        |--------------------------------------------------------------------------
-        | DATA DASHBOARD
-        |--------------------------------------------------------------------------
-        */
-
-        $totalKaryawan = 21;
-
-        $totalGoal = 21;
-
-        $rataRataPencapaian = 85.00;
-
-
         /*
         |--------------------------------------------------------------------------
         | AMBIL DATA MONITORING DARI DATABASE
@@ -37,6 +26,20 @@ class DashboardController extends Controller
         ])
             ->orderBy('tanggal_monitoring', 'desc')
             ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA DASHBOARD
+        |--------------------------------------------------------------------------
+        */
+
+        $totalKaryawan = Karyawan::count();
+
+        $totalGoal = Goal::count();
+
+        $rataRataPencapaian = $monitoringDatabase
+            ->avg('persentase') ?? 0;
 
 
         /*
