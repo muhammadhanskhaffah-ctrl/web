@@ -16,12 +16,14 @@ class MonitoringKpi extends Model
         'goal_kpi_id',
         'pencapaian',
         'persentase',
+        'bobot_target',
         'bobot_tercapai',
     ];
 
     protected $casts = [
         'pencapaian' => 'float',
         'persentase' => 'float',
+        'bobot_target' => 'float',
         'bobot_tercapai' => 'float',
     ];
 
@@ -34,4 +36,4 @@ class MonitoringKpi extends Model
     {
         return $this->belongsTo(GoalKpi::class, 'goal_kpi_id');
     }
-}   
+}

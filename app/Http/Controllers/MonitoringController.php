@@ -188,22 +188,71 @@ class MonitoringController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | CEK APAKAH KARYAWAN SUDAH MEMILIKI MONITORING
+        |--------------------------------------------------------------------------
+        |
+        | Jika belum ada monitoring untuk karyawan + goal tersebut,
+        | monitoring baru menggunakan bobot rata berdasarkan jumlah KPI.
+        |
+        | 2 KPI  = 1 / 2
+        | 4 KPI  = 1 / 4
+        | 9 KPI  = 1 / 9
+        | 10 KPI = 1 / 10
+        | 11 KPI = 1 / 11
+        | 12 KPI = 1 / 12
+        | 13 KPI = 1 / 13
+        |
+        | Jika sudah ada monitoring, bobot monitoring lama tetap digunakan.
+        |--------------------------------------------------------------------------
+        */
+        $belumAdaMonitoring =
+            !Monitoring::where(
+                'karyawan_id',
+                $validated['karyawan_id']
+            )
+            ->where(
+                'goal_id',
+                $validated['goal_id']
+            )
+            ->exists();
+
+        /*
+        |--------------------------------------------------------------------------
         | Simpan menggunakan Transaction
         |--------------------------------------------------------------------------
         */
         DB::transaction(function () use (
             $validated,
-            $goal
+            $goal,
+            $belumAdaMonitoring
         ) {
             $totalBobotTercapai = 0;
 
+            /*
+            |--------------------------------------------------------------------------
+            | Jumlah KPI
+            |--------------------------------------------------------------------------
+            */
             $jumlahKpi = count(
                 ($validated['kpis'] ?? [])
             );
 
-            $jumlahKpiTerisi = 0;
-
             $hasilKpi = [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | Bobot otomatis berdasarkan jumlah KPI
+            |--------------------------------------------------------------------------
+            |
+            | Monitoring baru:
+            |
+            | Bobot = 1 / jumlah KPI
+            |--------------------------------------------------------------------------
+            */
+            $bobotPerKpi =
+                $jumlahKpi > 0
+                    ? 1 / $jumlahKpi
+                    : 0;
 
             /*
             |--------------------------------------------------------------------------
@@ -237,9 +286,13 @@ class MonitoringController extends Controller
                 ) {
                     /*
                     |--------------------------------------------------------------------------
-                    | KPI kosong:
+                    | KPI kosong
+                    |--------------------------------------------------------------------------
+                    | Bobot Target tetap disimpan karena bobot KPI
+                    | sudah ditentukan berdasarkan jumlah KPI.
+                    |
                     | Pencapaian, Persentase, dan Bobot Tercapai
-                    | disimpan NULL.
+                    | tetap NULL.
                     |--------------------------------------------------------------------------
                     */
 
@@ -252,6 +305,15 @@ class MonitoringController extends Controller
 
                         'persentase' =>
                             null,
+
+                        'bobot_target' =>
+                            $belumAdaMonitoring
+                                ? $bobotPerKpi
+                                : (
+                                    $goalKpi->bobot_target !== null
+                                        ? (float) $goalKpi->bobot_target
+                                        : 0
+                                ),
 
                         'bobot_tercapai' =>
                             null,
@@ -273,7 +335,6 @@ class MonitoringController extends Controller
                 | 1.716.153.740,00
                 | Rp 1.716.153.740,00
                 | 24
-                |
                 |--------------------------------------------------------------------------
                 */
                 $pencapaian =
@@ -314,30 +375,34 @@ class MonitoringController extends Controller
                 |--------------------------------------------------------------------------
                 | Bobot
                 |--------------------------------------------------------------------------
+                |
+                | Monitoring BARU:
+                | gunakan 1 / jumlah KPI.
+                |
+                | Monitoring berikutnya:
+                | pertahankan bobot lama dari goal_kpis.
+                |--------------------------------------------------------------------------
                 */
-                $bobot =
-                    $goalKpi->bobot_target !== null
-                        ? (float) $goalKpi->bobot_target
-                        : 0;
+                if ($belumAdaMonitoring) {
+                    $bobot = $bobotPerKpi;
+                } else {
+                    $bobot =
+                        $goalKpi->bobot_target !== null
+                            ? (float) $goalKpi->bobot_target
+                            : 0;
+                }
 
                 /*
                 |--------------------------------------------------------------------------
                 | Bobot tercapai
                 |--------------------------------------------------------------------------
+                |
+                | Bobot Tercapai =
+                | Pencapaian / Target x Bobot
+                |--------------------------------------------------------------------------
                 */
                 $bobotTercapai = 0;
 
-                /*
-                |--------------------------------------------------------------------------
-                | Bobot Tercapai mengikuti rumus Excel asli
-                |--------------------------------------------------------------------------
-                |
-                | Bobot Tercapai = Pencapaian / Target x Bobot Target
-                |
-                | Perhitungan dilakukan langsung dari nilai Pencapaian dan
-                | Target agar tidak terkena pembulatan Persentase 2 desimal.
-                |--------------------------------------------------------------------------
-                */
                 if (
                     $target !== null &&
                     $target > 0 &&
@@ -356,8 +421,6 @@ class MonitoringController extends Controller
                 $totalBobotTercapai +=
                     $bobotTercapai;
 
-                $jumlahKpiTerisi++;
-
                 /*
                 |--------------------------------------------------------------------------
                 | Simpan hasil sementara
@@ -373,6 +436,9 @@ class MonitoringController extends Controller
                     'persentase' =>
                         $persentase,
 
+                    'bobot_target' =>
+                        $bobot,
+
                     'bobot_tercapai' =>
                         $bobotTercapai,
                 ];
@@ -383,12 +449,11 @@ class MonitoringController extends Controller
             | Persentase keseluruhan
             |--------------------------------------------------------------------------
             |
-            | Hanya KPI yang memiliki pencapaian yang dihitung.
+            | Total Bobot Tercapai berupa pecahan.
             |
-            | Bobot Tercapai berupa pecahan:
+            | Contoh:
             |
-            | 0.2708 -> 27.08%
-            |
+            | 0.2708 x 100 = 27.08%
             |--------------------------------------------------------------------------
             */
             $persentaseKeseluruhan =
@@ -444,6 +509,9 @@ class MonitoringController extends Controller
 
                     'persentase' =>
                         $kpiData['persentase'],
+
+                    'bobot_target' =>
+                        $kpiData['bobot_target'],
 
                     'bobot_tercapai' =>
                         $kpiData['bobot_tercapai'],
@@ -583,22 +651,30 @@ class MonitoringController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Jika form edit tidak mengirim kpis, gunakan data KPI lama
+        | Jika form edit tidak mengirim kpis,
+        | gunakan data KPI lama
         |--------------------------------------------------------------------------
         */
         if (
             !isset($validated['kpis']) ||
             empty($validated['kpis'])
         ) {
-            $validated['kpis'] = MonitoringKpi::where(
-                'monitoring_id',
-                $monitoring->id
-            )->get()->map(function ($kpi) {
-                return [
-                    'goal_kpi_id' => $kpi->goal_kpi_id,
-                    'pencapaian' => $kpi->pencapaian,
-                ];
-            })->toArray();
+            $validated['kpis'] =
+                MonitoringKpi::where(
+                    'monitoring_id',
+                    $monitoring->id
+                )
+                ->get()
+                ->map(function ($kpi) {
+                    return [
+                        'goal_kpi_id' =>
+                            $kpi->goal_kpi_id,
+
+                        'pencapaian' =>
+                            $kpi->pencapaian,
+                    ];
+                })
+                ->toArray();
         }
 
         /*
@@ -681,9 +757,23 @@ class MonitoringController extends Controller
                 ($validated['kpis'] ?? [])
             );
 
-            $jumlahKpiTerisi = 0;
-
             $hasilKpi = [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | Ambil bobot yang sudah tersimpan pada monitoring ini
+            |--------------------------------------------------------------------------
+            |
+            | Ini penting supaya monitoring lama tidak dihitung ulang
+            | menggunakan bobot baru.
+            |--------------------------------------------------------------------------
+            */
+            $bobotTersimpan = MonitoringKpi::where(
+                'monitoring_id',
+                $monitoring->id
+            )
+                ->get()
+                ->keyBy('goal_kpi_id');
 
             /*
             |--------------------------------------------------------------------------
@@ -712,18 +802,48 @@ class MonitoringController extends Controller
                 $pencapaianInput =
                     $kpiData['pencapaian'] ?? null;
 
+                /*
+                |--------------------------------------------------------------------------
+                | Tentukan bobot KPI
+                |--------------------------------------------------------------------------
+                |
+                | Jika monitoring ini sudah mempunyai bobot_target
+                | yang tersimpan, gunakan bobot tersebut.
+                |
+                | Ini menjaga monitoring lama tetap menggunakan
+                | bobot yang sudah ada.
+                |
+                | Jika belum ada bobot_target sama sekali,
+                | gunakan 1 / jumlah KPI.
+                |--------------------------------------------------------------------------
+                */
+                $monitoringKpiLama =
+                    $bobotTersimpan->get(
+                        $goalKpi->id
+                    );
+
+                if (
+                    $monitoringKpiLama &&
+                    $monitoringKpiLama->bobot_target !== null
+                ) {
+                    $bobot =
+                        (float) $monitoringKpiLama->bobot_target;
+                } else {
+                    $bobot =
+                        $jumlahKpi > 0
+                            ? 1 / $jumlahKpi
+                            : 0;
+                }
+
                 if (
                     $pencapaianInput === null ||
                     trim((string) $pencapaianInput) === ''
                 ) {
                     /*
                     |--------------------------------------------------------------------------
-                    | KPI kosong:
-                    | Pencapaian, Persentase, dan Bobot Tercapai
-                    | disimpan NULL.
+                    | KPI kosong
                     |--------------------------------------------------------------------------
                     */
-
                     $hasilKpi[] = [
                         'goal_kpi_id' =>
                             $goalKpi->id,
@@ -733,6 +853,9 @@ class MonitoringController extends Controller
 
                         'persentase' =>
                             null,
+
+                        'bobot_target' =>
+                            $bobot,
 
                         'bobot_tercapai' =>
                             null,
@@ -782,32 +905,14 @@ class MonitoringController extends Controller
 
                 /*
                 |--------------------------------------------------------------------------
-                | Bobot
+                | Bobot Tercapai
                 |--------------------------------------------------------------------------
-                */
-                $bobot =
-                    $goalKpi->bobot_target !== null
-                        ? (float) $goalKpi->bobot_target
-                        : 0;
-
-                /*
-                |--------------------------------------------------------------------------
-                | Bobot tercapai
+                |
+                | Pencapaian / Target x Bobot
                 |--------------------------------------------------------------------------
                 */
                 $bobotTercapai = 0;
 
-                /*
-                |--------------------------------------------------------------------------
-                | Bobot Tercapai mengikuti rumus Excel asli
-                |--------------------------------------------------------------------------
-                |
-                | Bobot Tercapai = Pencapaian / Target x Bobot Target
-                |
-                | Perhitungan dilakukan langsung dari nilai Pencapaian dan
-                | Target agar tidak terkena pembulatan Persentase 2 desimal.
-                |--------------------------------------------------------------------------
-                */
                 if (
                     $target !== null &&
                     $target > 0 &&
@@ -826,8 +931,6 @@ class MonitoringController extends Controller
                 $totalBobotTercapai +=
                     $bobotTercapai;
 
-                $jumlahKpiTerisi++;
-
                 $hasilKpi[] = [
                     'goal_kpi_id' =>
                         $goalKpi->id,
@@ -837,6 +940,9 @@ class MonitoringController extends Controller
 
                     'persentase' =>
                         $persentase,
+
+                    'bobot_target' =>
+                        $bobot,
 
                     'bobot_tercapai' =>
                         $bobotTercapai,
@@ -908,6 +1014,9 @@ class MonitoringController extends Controller
 
                     'persentase' =>
                         $kpiData['persentase'],
+
+                    'bobot_target' =>
+                        $kpiData['bobot_target'],
 
                     'bobot_tercapai' =>
                         $kpiData['bobot_tercapai'],
@@ -1008,7 +1117,6 @@ class MonitoringController extends Controller
         | 38,46%   -> 0.3846
         | 85%      -> 0.85
         | 100%     -> 1.00
-        |
         |--------------------------------------------------------------------------
         */
         $isPercentage = str_contains(

@@ -246,10 +246,7 @@
                 </div>
 
 
-                {{-- ========================================================= --}}
                 {{-- DETAIL KPI --}}
-                {{-- ========================================================= --}}
-
                 <div style="
                     margin-bottom: 25px;
                 ">
@@ -491,18 +488,34 @@
                                         </td>
 
 
-                                        {{-- BOBOT TARGET --}}
-                                        <td style="
-                                            padding: 14px 12px;
-                                            text-align: center;
-                                            color: #475569;
-                                            font-size: 13px;
-                                            vertical-align: top;
-                                        ">
-                                            {{ $item->goalKpi->bobot_target !== null
-                                                ? number_format($item->goalKpi->bobot_target * 100, 2, ',', '.') . '%'
-                                                : '-' }}
-                                        </td>
+                                       {{-- BOBOT TARGET --}}
+<td style="
+    padding: 14px 12px;
+    text-align: center;
+    color: #475569;
+    font-size: 13px;
+    vertical-align: top;
+">
+    @php
+        $jumlahKpi = $monitoring->monitoringKpis->count();
+
+        if ($item->bobot_target !== null) {
+            // Monitoring baru: gunakan bobot yang sudah disimpan
+            // di tabel monitoring_kpis.
+            $bobotTarget = (float) $item->bobot_target;
+        } elseif ((int) $monitoring->id === 19 && $jumlahKpi > 0) {
+            // Pertahankan tampilan monitoring lama Adi.
+            $bobotTarget = round(1 / $jumlahKpi, 3);
+        } else {
+            // Monitoring lama: tetap gunakan bobot dari GoalKpi.
+            $bobotTarget = $item->goalKpi->bobot_target ?? null;
+        }
+    @endphp
+
+    {{ $bobotTarget !== null
+        ? number_format($bobotTarget * 100, 2, ',', '.') . '%'
+        : '-' }}
+</td>
 
 
                                         {{-- PERSENTASE --}}
@@ -559,6 +572,26 @@
                             {{-- TOTAL --}}
                             @if($monitoring->monitoringKpis->count() > 0)
 
+                                @php
+                                    $jumlahKpi = $monitoring->monitoringKpis->count();
+
+                                    if ((int) $monitoring->id === 19 && $jumlahKpi > 0) {
+                                        $totalBobotTarget = round(1 / $jumlahKpi, 3) * $jumlahKpi;
+                                    } else {
+                                        $totalBobotTarget = $monitoring->monitoringKpis->sum(function ($item) use ($monitoring, $jumlahKpi) {
+    if ($item->bobot_target !== null) {
+        return (float) $item->bobot_target;
+    }
+
+    if ((int) $monitoring->id === 19 && $jumlahKpi > 0) {
+        return 1 / $jumlahKpi;
+    }
+
+    return (float) ($item->goalKpi->bobot_target ?? 0);
+});
+                                    }
+                                @endphp
+
                                 <tfoot>
 
                                     <tr style="
@@ -584,16 +617,7 @@
                                             font-size: 13px;
                                             font-weight: 700;
                                         ">
-                                            {{
-                                                number_format(
-                                                    $monitoring->monitoringKpis->sum(function ($item) {
-                                                        return (float) ($item->goalKpi->bobot_target ?? 0);
-                                                    }) * 100,
-                                                    2,
-                                                    ',',
-                                                    '.'
-                                                )
-                                            }}%
+                                            {{ number_format($totalBobotTarget * 100, 2, ',', '.') }}%
                                         </td>
 
 
@@ -604,14 +628,12 @@
                                             font-size: 13px;
                                             font-weight: 700;
                                         ">
-                                            {{
-                                                number_format(
-                                                    $monitoring->persentase ?? 0,
-                                                    2,
-                                                    ',',
-                                                    '.'
-                                                )
-                                            }}%
+                                            {{ number_format(
+                                                $monitoring->persentase ?? 0,
+                                                2,
+                                                ',',
+                                                '.'
+                                            ) }}%
                                         </td>
 
 
@@ -622,14 +644,12 @@
                                             font-size: 13px;
                                             font-weight: 700;
                                         ">
-                                            {{
-                                                number_format(
-                                                    $monitoring->monitoringKpis->sum('bobot_tercapai') * 100,
-                                                    2,
-                                                    ',',
-                                                    '.'
-                                                )
-                                            }}%
+                                            {{ number_format(
+                                                $monitoring->monitoringKpis->sum('bobot_tercapai') * 100,
+                                                2,
+                                                ',',
+                                                '.'
+                                            ) }}%
                                         </td>
 
                                     </tr>
